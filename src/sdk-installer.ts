@@ -52,17 +52,17 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
       console.log(`Installing emulator build ${emulatorBuild}.`);
       // TODO find out the correct download URLs for all build ids
       var downloadUrlSuffix: string;
-      const majorBuildVersion = Number(emulatorBuild.charAt(0));
-      if (majorBuildVersion > 7) {
+      const majorBuildVersion = Number(emulatorBuild);
+      if (majorBuildVersion >= 8000000) {
         if (isArm) {
           downloadUrlSuffix = `_aarch64-${emulatorBuild}`;
         } else {
           downloadUrlSuffix = `_x64-${emulatorBuild}`;
         }
-      } else if (majorBuildVersion > 6) {
+      } else if (majorBuildVersion >= 7000000) {
         downloadUrlSuffix = `_x64-${emulatorBuild}`;
       } else {
-        downloadUrlSuffix = `${emulatorBuild}`;
+        downloadUrlSuffix = `-${emulatorBuild}`;
       }
       await exec.exec(`curl -fo emulator.zip https://dl.google.com/android/repository/emulator-${isOnMac ? 'darwin' : 'linux'}${downloadUrlSuffix}.zip`);
       await exec.exec(`unzip -o -q emulator.zip -d ${process.env.ANDROID_HOME}`);
