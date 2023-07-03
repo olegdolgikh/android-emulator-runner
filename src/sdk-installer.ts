@@ -17,7 +17,7 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
   try {
     console.log(`::group::Install Android SDK`);
     const isOnMac = process.platform === 'darwin';
-    const isARM = process.arch === 'arm64';
+    const isArm = process.arch === 'arm64';
 
     if (!isOnMac) {
       await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME} -R`);
@@ -51,8 +51,8 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     if (emulatorBuild) {
       console.log(`Installing emulator build ${emulatorBuild}.`);
       // TODO find out the correct download URLs for all build ids
-      var downloadSuffix; 
-      const majorBuildVersion = emulatorBuild.charAt(0)
+      var downloadUrlSuffix; 
+      const majorBuildVersion = Number(emulatorBuild.charAt(0))
       if (majorBuildVersion > 7) {
         if (isArm) {
           downloadUrlSuffix = `_aarch64-${emulatorBuild}`
